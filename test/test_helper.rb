@@ -19,24 +19,38 @@ class ActionDispatch::IntegrationTest
 end
 
 class ActiveSupport::TestCase
+  # You don't need this:
+
+  # def t(*args)
+  #   I18n.t(*args)
+  # end
+
+  # Because somebody has already written the same :)
+  include AbstractController::Translation
+
   fixtures :all
 
-  private
+  # You don't need to create your own helpers for signing in users
+  # because they already exists — login_as and logout.
+  # Just include them to tests:
+  include Warden::Test::Helpers
+  Warden.test_mode!
 
-  def t(*args)
-    I18n.t(*args)
-  end
+  # So, let's remove it:
 
-  def sign_in_user(email, password)
-    get new_user_session_path
-    post_via_redirect user_session_path, user: {
-      email: email,
-      password: password
-    }
-  end
+  # def sign_in_user(email, password)
+  #   get new_user_session_path
+  #   post_via_redirect user_session_path, user: {
+  #     email: email,
+  #     password: password
+  #   }
+  # end
 
-  def assert_follow_link(path)
-    assert_select "a[href='#{path}']"
-    get path
-  end
+  # I'd better put this helpers to the Support Folders:
+  # support/helpers/admin_helpers.rb
+
+  # def assert_follow_link(path)
+  #   assert_select "a[href='#{path}']"
+  #   get path
+  # end
 end

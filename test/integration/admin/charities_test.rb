@@ -1,25 +1,34 @@
 require 'test_helper'
 
 class Admin::CharitiesTest < ActionDispatch::IntegrationTest
+  include AdminHelpers
+
   setup do
+    # You don't need to create your own helpers for signing up users
+    # because they already exists: login_as and logout.
+
+    # sign_in_user(users(:john).email, "helloworld")
+
+    login_as users(:john)
+
     @_app = App.new
   end
 
   test "that an unauthenticated user cannot reach the list of charities" do
+    # Let's logout to see what happen if admin is unauthenticated:
+    logout
     get admin_charities_path
 
     assert_redirected_to new_user_session_path
   end
 
   test "that an authenticated user can reach the list of charities" do
-    sign_in_user(users(:john).email, "helloworld")
     get admin_charities_path
 
     assert_response :success
   end
 
   test "that an authenticated user can reach the new charity form" do
-    sign_in_user(users(:john).email, "helloworld")
     get admin_charities_path
     assert_follow_link new_admin_charity_path
 
@@ -29,7 +38,6 @@ class Admin::CharitiesTest < ActionDispatch::IntegrationTest
   end
 
   test "that an authenticated user can create a new charity" do
-    sign_in_user(users(:john).email, "helloworld")
     get new_admin_charity_path
 
     assert_difference "@_app.count_charities" do
@@ -47,7 +55,6 @@ class Admin::CharitiesTest < ActionDispatch::IntegrationTest
   end
 
   test "that an authenticated user cannot create a new charity without a name" do
-    sign_in_user(users(:john).email, "helloworld")
     get new_admin_charity_path
 
     assert_no_difference "@_app.count_charities" do
@@ -58,7 +65,6 @@ class Admin::CharitiesTest < ActionDispatch::IntegrationTest
   end
 
   test "that an authenticated user cannot create a new charity and set the total amount" do
-    sign_in_user(users(:john).email, "helloworld")
     get new_admin_charity_path
 
     assert_difference "@_app.count_charities" do
