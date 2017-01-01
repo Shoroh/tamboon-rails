@@ -22,4 +22,14 @@ class CharityTest < ActiveSupport::TestCase
 
     assert_equal 20000, charity.reload.total
   end
+
+  test "that .find_or_radom returns certain charity" do
+    charity = charities(:children)
+
+    assert_equal charity, Charity.find_or_random(charity)
+  end
+
+  test "that .find_or_radom returns random charity when id == 'random'" do
+    assert_instance_of Charity, Charity.find_or_random('random')
+  end
 end
