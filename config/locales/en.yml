@@ -12,5 +12,14 @@ en:
   website:
     donate:
       link: "Donate"
-      success: "Success you've donated some money money money."
-      failure: "It seems like this didn't work so well. Try again maybe?"
+      success: "Success you've donated %{amount} THB to %{charity}."
+
+  activemodel:
+    errors:
+      models:
+        charge:
+          attributes:
+            charity:
+              blank: "— you must choose one at least"
+            amount:
+              greater_than_or_equal_to: "must be more than %{min} THB"
