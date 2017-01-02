@@ -22,4 +22,4 @@ en:
             charity:
               blank: "— you must choose one at least"
             amount:
-              greater_than_or_equal_to: "must be more than %{min} THB"
+              greater_than_or_equal_to: "must be more or equal %{min} THB"

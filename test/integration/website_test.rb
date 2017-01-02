@@ -32,7 +32,7 @@ class WebsiteTest < ActionDispatch::IntegrationTest
     assert_template :index
     # Otherwise, how do we know that user receives correct message,
     # where amount is 20, but not 2000?
-    assert_equal "Amount must be more than 20 THB", flash.now[:alert]
+    assert_equal "Amount must be more or equal 20 THB", flash.now[:alert]
   end
 
   test "that someone can't donate less than 20 to a charity" do
@@ -40,7 +40,7 @@ class WebsiteTest < ActionDispatch::IntegrationTest
     post donate_path, amount: "19", omise_token: "tokn_X", charity: charity.id
 
     assert_template :index
-    assert_equal "Amount must be more than 20 THB", flash.now[:alert]
+    assert_equal "Amount must be more or equal 20 THB", flash.now[:alert]
   end
 
   test "that someone can't donate without a token" do
